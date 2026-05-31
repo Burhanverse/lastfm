@@ -21,7 +21,10 @@ const maxMaxAge = 3600;
 
 const defaultLovedStyle = LovedTrackStyle.RightOfAlbumArt;
 
-const BaseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+const BaseUrl =
+    process.env.VERCEL_URL && !process.env.VERCEL_URL.includes('<')
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000';
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const { user } = req.query;
@@ -86,13 +89,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     // `header_size` param. `header_size` will take priority.
     const headerSize: string | string[] | undefined = req.query['header_size'] || HeaderStyle.Normal;
     const headerStyle: string | string[] | undefined = req.query['header_style'] || headerSize;
-    if (Array.isArray(headerStyle) || !(<any>Object).values(HeaderStyle).includes(headerStyle)) {
+    if (Array.isArray(headerStyle) || !Object.values(HeaderStyle).includes(headerStyle as HeaderStyle)) {
         res.statusCode = 400;
         res.json({ error: `Invalid 'header_style' parameter. Should be one of ${Object.values(HeaderStyle)}.` });
     }
 
     const footerStyle: string | string[] | undefined = req.query['footer_style'] || FooterStyle.None;
-    if (Array.isArray(footerStyle) || !(<any>Object).values(FooterStyle).includes(footerStyle)) {
+    if (Array.isArray(footerStyle) || !Object.values(FooterStyle).includes(footerStyle as FooterStyle)) {
         res.statusCode = 400;
         res.json({ error: `Invalid 'footer_style' parameter. Should be one of ${Object.values(FooterStyle)}.` });
     }
@@ -112,7 +115,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     }
 
     const userVisibility: string | string[] | undefined = req.query['show_user'] || UserVisibility.Never;
-    if (Array.isArray(userVisibility) || !(<any>Object).values(UserVisibility).includes(userVisibility)) {
+    if (Array.isArray(userVisibility) || !Object.values(UserVisibility).includes(userVisibility as UserVisibility)) {
         res.statusCode = 400;
         res.json({ error: `Invalid 'show_user' parameter. Should be one of ${Object.values(UserVisibility)}.` });
     }
@@ -137,7 +140,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     }
 
     try {
-        const apiCalls: Promise<AxiosResponse<any, any>>[] = [
+        const apiCalls: Promise<AxiosResponse<RecentTracksResponse | UserInfoResponse>>[] = [
             axios.get<RecentTracksResponse>('http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks', {
                 params: {
                     user: user,
@@ -162,19 +165,27 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             );
         const datas = await Promise.all(apiCalls);
 
-        const trackData = datas[0].data;
-        let userData;
-        if (datas[1] !== undefined) userData = datas[1].data;
+        const trackData = datas[0].data as RecentTracksResponse;
+        let userData: UserInfoResponse | undefined;
+        if (datas[1] !== undefined) userData = datas[1].data as UserInfoResponse;
 
         // Trim array as API may return more than 'count'
         trackData.recenttracks.track = trackData.recenttracks.track.slice(0, count);
 
         // Set base64-encoded cover art images by routing through /api/proxy endpoint
         // This is needed because GitHub's Content Security Policy prohibits external images (inline allowed)
-        const objs: any[] = [...trackData.recenttracks.track];
+        interface ImageContainer {
+            image?: { '#text': string }[];
+            inlineimage?: unknown;
+        }
+        const objs: ImageContainer[] = [...trackData.recenttracks.track];
         if (userData !== undefined) objs.push(userData.user);
         for (const obj of objs) {
-            const smallImg = obj.image[0]['#text'];
+            const smallImg = obj.image?.[0]?.['#text'];
+            if (!smallImg) {
+                obj.inlineimage = PlaceholderImg;
+                continue;
+            }
             try {
                 const { data } = await axios.get<string>(`${BaseUrl}/api/proxy`, {
                     params: {
@@ -191,13 +202,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         res.setHeader('Content-Type', 'image/svg+xml');
         res.statusCode = 200;
         res.send(generateSvg(trackData, width, lovedTrackOptions, styleOptions, userData));
-    } catch (e: any) {
-        const trackData = e?.response?.trackData;
+    } catch (e: unknown) {
         res.statusCode = 400;
-        if (trackData) {
-            res.json({ error: trackData.message });
+        if (axios.isAxiosError(e)) {
+            const data = e.response?.data;
+            if (data && typeof data === 'object' && 'message' in data) {
+                res.json({ error: (data as { message: string }).message });
+            } else {
+                res.json({ error: e.message });
+            }
+        } else if (e instanceof Error) {
+            res.json({ error: e.message });
         } else {
-            res.json({ error: e.toString() });
+            res.json({ error: 'An unknown error occurred' });
         }
     }
 };

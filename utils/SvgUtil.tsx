@@ -1,5 +1,5 @@
 import ReactDOMServer from 'react-dom/server';
-import { flushToHTML } from 'styled-jsx/server';
+import { createStyleRegistry, StyleRegistry } from 'styled-jsx';
 import SvgWidget from '../components/SvgWidget';
 import { LovedTrackOptions } from '../models/LovedTrackOptions';
 import { RecentTracksResponse } from '../models/RecentTracksResponse';
@@ -32,7 +32,7 @@ export function generateSvg(
     width: number,
     lovedTrackOptions: LovedTrackOptions,
     styleOptions: StyleOptions,
-    UserInfoResponse: UserInfoResponse
+    UserInfoResponse?: UserInfoResponse
 ): string {
     let userInfo;
     if (UserInfoResponse !== undefined) userInfo = UserInfoResponse.user;
@@ -42,17 +42,22 @@ export function generateSvg(
         baseHeightsFooter[styleOptions.footerStyle] +
         count * heightPerItem +
         heightBuffer;
+
+    const registry = createStyleRegistry();
     const svgBody = ReactDOMServer.renderToStaticMarkup(
-        <SvgWidget
-            width={width}
-            height={height}
-            recentTracksResponse={recentTracksRes}
-            lovedTrackOptions={lovedTrackOptions}
-            styleOptions={styleOptions}
-            userInfo={userInfo}
-        />
+        <StyleRegistry registry={registry}>
+            <SvgWidget
+                width={width}
+                height={height}
+                recentTracksResponse={recentTracksRes}
+                lovedTrackOptions={lovedTrackOptions}
+                styleOptions={styleOptions}
+                userInfo={userInfo}
+            />
+        </StyleRegistry>
     );
-    const svgStyles = flushToHTML();
+    const styles = registry.styles();
+    const svgStyles = ReactDOMServer.renderToStaticMarkup(<>{styles}</>);
 
     return `
     <svg

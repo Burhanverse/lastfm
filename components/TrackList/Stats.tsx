@@ -35,7 +35,7 @@ export default function Stats(props: Props): JSX.Element {
                 flexDirection: 'row',
                 justifyContent: props.centerStats ? 'center' : 'space-between',
             }}>
-            <div className={`lastfm-stats classes ${props.size.includes('compact') ? 'compact' : ''}`}>
+            <div className={`lastfm-stats ${classes} ${props.size.includes('compact') ? 'compact' : ''}`}>
                 <div>
                     <Text className={classes} strong>
                         {parseInt(props.userInfo.playcount).toLocaleString()}

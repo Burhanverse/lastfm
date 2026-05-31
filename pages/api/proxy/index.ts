@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const acceptedPrefix = 'https://lastfm.freetls.fastly.net/i/';
+const acceptedDomains = [
+    'lastfm.freetls.fastly.net',
+    'lastfm-img2.akamaized.net',
+    'img2-ssl.lst.fm',
+    'secure.gravatar.com',
+    'www.gravatar.com',
+];
 
 /**
  * "Proxy" endpoint that takes a Last.fm cover art URL and returns its base64 representation. Cover art images are
@@ -10,29 +16,49 @@ const acceptedPrefix = 'https://lastfm.freetls.fastly.net/i/';
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const { img } = req.query;
 
-    // To be safe, only accept URLs from Lastfm base URL
-    if (!img || Array.isArray(img) || !img.startsWith(acceptedPrefix)) {
+    if (!img || Array.isArray(img)) {
         res.statusCode = 400;
-        res.json({ error: 'Invalid img parameter' });
+        res.json({ error: 'Invalid img parameter: Must be a single URL' });
+        return;
+    }
+
+    // Securely validate the URL hostname
+    try {
+        const parsedUrl = new URL(img);
+        const isAccepted = acceptedDomains.includes(parsedUrl.hostname);
+        if (!isAccepted) {
+            res.statusCode = 400;
+            res.json({ error: 'Invalid img parameter: Domain not allowed' });
+            return;
+        }
+    } catch {
+        res.statusCode = 400;
+        res.json({ error: 'Invalid img parameter: Malformed URL' });
         return;
     }
 
     try {
-        const { data } = await axios.get<string>(img, {
+        const { data } = await axios.get<ArrayBuffer>(img, {
             responseType: 'arraybuffer',
         });
-        const base64 = Buffer.from(data, 'binary').toString('base64');
+        const base64 = Buffer.from(data).toString('base64');
 
         // Set cache for a week
         res.setHeader('Cache-Control', 'max-age=86400, immutable');
         res.send(`data:image/png;base64,${base64}`);
-    } catch (e: any) {
-        const data = e?.response?.data;
+    } catch (e: unknown) {
         res.statusCode = 400;
-        if (data) {
-            res.json({ error: data.message });
+        if (axios.isAxiosError(e)) {
+            const data = e.response?.data;
+            if (data && typeof data === 'object' && 'message' in data) {
+                res.json({ error: (data as { message: string }).message });
+            } else {
+                res.json({ error: e.message });
+            }
+        } else if (e instanceof Error) {
+            res.json({ error: e.message });
         } else {
-            res.json({ error: e.toString() });
+            res.json({ error: 'An unknown error occurred' });
         }
     }
 };
