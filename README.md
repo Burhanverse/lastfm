@@ -2,7 +2,7 @@
 
 Show your recent Last.fm scrobbles on your GitHub profile README. Powered by [Vercel](https://vercel.com).
 
-> Check out [spotify-recently-played-readme](https://github.com/JeffreyCA/spotify-recently-played-readme) for a similar integration for Spotify.
+> Check out [spotify-recently-played-readme](https://github.com/Burhanverse/spotify-recently-played-readme) for a similar integration for Spotify.
 
 ## Getting Started
 
@@ -160,7 +160,7 @@ Change the background color of the main card with a hexadecimal RGB/A code. Supp
 
 ## Deploying own Vercel project
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https%3A%2F%2Fgithub.com%2FJeffreyCA%2Flastfm-cyan-readme&env=API_KEY)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https%3A%2F%2Fgithub.com%2FBurhanverse%2Flastfm&env=API_KEY)
 
 Deploy your own Vercel project using the link above. Next, you'll need to set the `API_KEY` environment variable to your Last.fm API key.
 
@@ -169,7 +169,7 @@ Deploy your own Vercel project using the link above. Next, you'll need to set th
 
 1. Clone Git repo
     ```sh
-    $ git clone https://github.com/JeffreyCA/lastfm-cyan-readme.git
+    $ git clone https://github.com/Burhanverse/lastfm.git
     ```
 2. Install Node dependencies
     ```sh
