@@ -9,18 +9,18 @@ Show your recent Last.fm scrobbles on your GitHub profile README. Powered by [Ve
 Just add the following into your README and set the query parameter `user` to your Last.fm username.
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens)
 
 To add link to your last.fm profile, wrap the image in a link tag:
 
 ```md
-[![My Last.fm](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01)](https://www.last.fm/user/JeffreyCA01)
+[![My Last.fm](https://lastfm-cyan.vercel.app/api?user=AquaListens)](https://www.last.fm/user/AquaListens)
 ```
 
-[![My Last.fm](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01)](https://www.last.fm/user/JeffreyCA01)
+[![My Last.fm](https://lastfm-cyan.vercel.app/api?user=AquaListens)](https://www.last.fm/user/AquaListens)
 
 ## Customization
 
@@ -54,10 +54,10 @@ Change the amount of recent tracks that are displayed.
 > Max Value: `10`
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&count=1)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&count=1)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&count=1)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&count=1)
 
 #### Customizing card width
 
@@ -70,10 +70,10 @@ Change the width of the card, in pixels.
 > Max Value: `1000`
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=600)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=600)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=600)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=600)
 
 #### Show loved tracks
 
@@ -84,10 +84,10 @@ Show a heart indicator for loved tracks.
 > Possible Values: `true` | `false`
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&loved=true)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&loved=true)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&loved=true)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&loved=true)
 
 #### Show user profile
 
@@ -98,13 +98,13 @@ Determines if and where the user's profile information is shown. If you want to 
 > Possible Values: `never` | `always` | `header` | `footer`
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&show_user=header)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&show_user=header)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&show_user=header)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&show_user=header)
 |                                                 `header`                                                  |                                                 `footer & footer_style=normal`                                                  |
 | :-----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | 
-| ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=350&count=2&show_user=header) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=350&count=2&footer_style=normal&show_user=footer) |
+| ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=350&count=2&show_user=header) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=350&count=2&footer_style=normal&show_user=footer) |
 
 #### Header Styles
 
@@ -118,7 +118,7 @@ Changes the size and content of the header. You can use header and footer styles
 
 |                                                 `none`                                                  |                                                 `normal_stats`                                                  |                                                 `compact_stats_only`                                                  |
 | :-----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: |
-| ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&header_style=none) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&header_style=normal_stats) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&header_style=compact_stats_only) |
+| ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&header_style=none) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&header_style=normal_stats) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&header_style=compact_stats_only) |
 
 #### Footer Styles
 
@@ -130,7 +130,7 @@ Changes the size and content of the footer. You can use header and footer styles
 
 |                                                 `wave`                                                  |                                                 `normal`                                                  |                                                 `normal_stats`                                                  |
 | :-----------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
-| ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&footer_style=wave) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&footer_style=normal) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&footer_style=normal_stats) |
+| ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&footer_style=wave) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&footer_style=normal) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&footer_style=normal_stats) |
 
 #### Loved Style
 
@@ -142,7 +142,7 @@ Customize the indicator placement for loved tracks.
 
 |                                                    Style 1                                                     |                                                    Style 2                                                     |                                                    Style 3                                                     |                                                    Style 4                                                     |
 | :------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
-| ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&loved=true&loved_style=1) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&loved=true&loved_style=2) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&loved=true&loved_style=3) | ![](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&width=300&count=2&loved=true&loved_style=4) |
+| ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&loved=true&loved_style=1) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&loved=true&loved_style=2) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&loved=true&loved_style=3) | ![](https://lastfm-cyan.vercel.app/api?user=AquaListens&width=300&count=2&loved=true&loved_style=4) |
 
 #### Change Background Color
 
@@ -153,22 +153,23 @@ Change the background color of the main card with a hexadecimal RGB/A code. Supp
 > Possible Values: `any valid RGB/A hex-code`
 
 ```md
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&bg_color=000000)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&bg_color=000000)
 ```
 
-![My scrobbles](https://lastfm-recently-played.vercel.app/api?user=JeffreyCA01&bg_color=000000)
+![My scrobbles](https://lastfm-cyan.vercel.app/api?user=AquaListens&bg_color=000000)
 
 ## Deploying own Vercel project
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https%3A%2F%2Fgithub.com%2FJeffreyCA%2Flastfm-recently-played-readme&env=API_KEY,VERCEL_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https%3A%2F%2Fgithub.com%2FJeffreyCA%2Flastfm-cyan-readme&env=API_KEY)
 
-Deploy your own Vercel project using the link above. Next, you'll need to set the `API_KEY` environment variable to your Last.fm API key. You'll also need to set the `VERCEL_URL` system environment variable in the Vercel project settings.
+Deploy your own Vercel project using the link above. Next, you'll need to set the `API_KEY` environment variable to your Last.fm API key.
+
 
 ## Running locally
 
 1. Clone Git repo
     ```sh
-    $ git clone https://github.com/JeffreyCA/lastfm-recently-played-readme.git
+    $ git clone https://github.com/JeffreyCA/lastfm-cyan-readme.git
     ```
 2. Install Node dependencies
     ```sh
