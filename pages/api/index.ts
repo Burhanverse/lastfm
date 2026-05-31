@@ -21,10 +21,26 @@ const maxMaxAge = 3600;
 
 const defaultLovedStyle = LovedTrackStyle.RightOfAlbumArt;
 
-const BaseUrl =
-    process.env.VERCEL_URL && !process.env.VERCEL_URL.includes('<')
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000';
+const acceptedDomains = [
+    'lastfm.freetls.fastly.net',
+    'lastfm-img2.akamaized.net',
+    'img2-ssl.lst.fm',
+    'secure.gravatar.com',
+    'www.gravatar.com',
+];
+
+async function fetchBase64Image(img: string): Promise<string> {
+    const parsedUrl = new URL(img);
+    const isAccepted = acceptedDomains.includes(parsedUrl.hostname);
+    if (!isAccepted) {
+        throw new Error('Invalid image domain');
+    }
+    const { data } = await axios.get<ArrayBuffer>(img, {
+        responseType: 'arraybuffer',
+    });
+    const base64 = Buffer.from(data).toString('base64');
+    return `data:image/png;base64,${base64}`;
+}
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const { user } = req.query;
@@ -187,12 +203,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 continue;
             }
             try {
-                const { data } = await axios.get<string>(`${BaseUrl}/api/proxy`, {
-                    params: {
-                        img: smallImg,
-                    },
-                });
-                obj.inlineimage = data;
+                obj.inlineimage = await fetchBase64Image(smallImg);
             } catch {
                 obj.inlineimage = PlaceholderImg;
             }
